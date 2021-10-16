@@ -52,8 +52,8 @@ renderer.setSize(innerWidth, innerHeight);
 document.body.appendChild(renderer.domElement)
 const scene = new THREE.Scene();
 const cam = new THREE.PerspectiveCamera(70, innerWidth/innerHeight, 0.001, 100000);
-cam.position.z = -750
-cam.position.x = -120
+cam.position.z = -450
+cam.position.x = -40
 scene.background = new THREE.Color(0xefefef)
 
 const geometry = new THREE.BufferGeometry(); // create a simple square shape. We duplicate the top left and bottom right // vertices because each vertex needs to appear once per triangle. 
@@ -163,7 +163,7 @@ function draw(){
 }
 wv.onmessage = function (e) {
     let v = e.data[0];
-    alert("vertex buffer done")
+   // alert("vertex buffer done")
     //alert("done v"+e.data[1])
     bw.v = true
     dw.v = v
@@ -172,7 +172,7 @@ wv.onmessage = function (e) {
 
 wi.onmessage = function(e){
     let i = e.data
-    alert("index buffer done")
+    //alert("index buffer done")
     bw.i = true
     dw.i = i
     draw()
@@ -188,7 +188,7 @@ function sendData(r,c,d){
 imgw.onmessage = function (e) {
     let p = e.data[0]
     let d = e.data[1]
-    alert("done imgw : " + d.length)
+    //alert("done imgw : " + d.length)
     //saveTextAsFile(d)
     wv.postMessage([ROWS,COLS,d])
     wi.postMessage([ROWS,COLS,d])
@@ -198,7 +198,7 @@ imgw.onmessage = function (e) {
 let acolt = []
 shadAW.onmessage = function (e) {
     let d = e.data[0]
-    alert("add shader done")
+    //alert("add shader done")
     bshad.a = true
     dshad.a.d = d
     dshad.a.l = e.data[1]
