@@ -62,7 +62,7 @@ const geometry = new THREE.BufferGeometry(); // create a simple square shape. We
 
 let wv = new Worker("wv21.js")
 let wi = new Worker("wi2.js")
-let imgw = new Worker("testaimgw.js")
+
 
 //alert(wv)
 
@@ -184,17 +184,7 @@ function sendData(r,c,d){
     shadAW.postMessage([r,c,d])
     alert("wait. still drawing scene..this takes times..")
 }
-
-imgw.onmessage = function (e) {
-    let p = e.data[0]
-    let d = e.data[1]
-    //alert("done imgw : " + d.length)
-    //saveTextAsFile(d)
-    wv.postMessage([ROWS,COLS,d])
-    wi.postMessage([ROWS,COLS,d])
-    shadAW.postMessage([ROWS,COLS,d])
-    alert("done send to wv wi")
-}
+   
 let acolt = []
 shadAW.onmessage = function (e) {
     let d = e.data[0]
