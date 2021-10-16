@@ -64,7 +64,7 @@ let wv = new Worker("wv21.js")
 let wi = new Worker("wi2.js")
 let imgw = new Worker("testaimgw.js")
 
-alert(wv)
+//alert(wv)
 
 
 
@@ -163,6 +163,7 @@ function draw(){
 }
 wv.onmessage = function (e) {
     let v = e.data[0];
+    alert("vertex buffer done")
     //alert("done v"+e.data[1])
     bw.v = true
     dw.v = v
@@ -171,6 +172,7 @@ wv.onmessage = function (e) {
 
 wi.onmessage = function(e){
     let i = e.data
+    alert("index buffer done")
     bw.i = true
     dw.i = i
     draw()
@@ -231,7 +233,7 @@ sendData(ROWS,COLS,arr);
 fp = "leeseoyeon.txt";
 
 readTextFile(fp);
-
+//alert("filename : "+fp)
 
 const material = new THREE.MeshBasicMaterial( { color: 0xff0000 } );     
 
