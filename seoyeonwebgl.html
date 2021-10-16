@@ -52,8 +52,8 @@ renderer.setSize(innerWidth, innerHeight);
 document.body.appendChild(renderer.domElement)
 const scene = new THREE.Scene();
 const cam = new THREE.PerspectiveCamera(70, innerWidth/innerHeight, 0.001, 100000);
-cam.position.z = 540
-cam.position.x = 50
+cam.position.z = 550
+cam.position.x = 40
 scene.background = new THREE.Color(0xefefef)
 
 const geometry = new THREE.BufferGeometry(); // create a simple square shape. We duplicate the top left and bottom right // vertices because each vertex needs to appear once per triangle. 
@@ -146,7 +146,7 @@ function draw(){
     if (bw.v && bw.i && bshad.a) {
         clearInterval(loadI)
         loader.style.display = "none"
-        alert("done!!")
+        alert("done!!scroll and move")
         geometry.setIndex(dw.i)
         geometry.setAttribute("position", new THREE.BufferAttribute(dw.v, 3))
         geometry.setAttribute("acol", new THREE.BufferAttribute(new Float32Array(dshad.a.d),dshad.a.l))
