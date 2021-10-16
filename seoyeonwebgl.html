@@ -39,7 +39,7 @@
 import { DRACOLoader } from 'https://cdn.jsdelivr.net/npm/three@0.121.1/examples/jsm/loaders/DRACOLoader.js'; */
 import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.121.1/examples/jsm/controls/OrbitControls.js';
 
-alert("돈냈어안냈어!!")
+alert("돈냈어안냈어!?")
 let COLS = 80;
 let ROWS = 80;
 const loader = document.querySelector(".loader")
@@ -52,8 +52,8 @@ renderer.setSize(innerWidth, innerHeight);
 document.body.appendChild(renderer.domElement)
 const scene = new THREE.Scene();
 const cam = new THREE.PerspectiveCamera(70, innerWidth/innerHeight, 0.001, 100000);
-cam.position.z = 950
-cam.position.x = 100
+cam.position.z = 380
+cam.position.x = 300
 scene.background = new THREE.Color(0xefefef)
 
 const geometry = new THREE.BufferGeometry(); // create a simple square shape. We duplicate the top left and bottom right // vertices because each vertex needs to appear once per triangle. 
@@ -146,7 +146,7 @@ function draw(){
     if (bw.v && bw.i && bshad.a) {
         clearInterval(loadI)
         loader.style.display = "none"
-        alert("done!!check that out")
+        alert("done!!")
         geometry.setIndex(dw.i)
         geometry.setAttribute("position", new THREE.BufferAttribute(dw.v, 3))
         geometry.setAttribute("acol", new THREE.BufferAttribute(new Float32Array(dshad.a.d),dshad.a.l))
