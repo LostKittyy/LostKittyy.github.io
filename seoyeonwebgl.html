@@ -189,7 +189,7 @@ imgw.onmessage = function (e) {
     let p = e.data[0]
     let d = e.data[1]
     alert("done imgw : " + d.length)
-    saveTextAsFile(d)
+    //saveTextAsFile(d)
     wv.postMessage([ROWS,COLS,d])
     wi.postMessage([ROWS,COLS,d])
     shadAW.postMessage([ROWS,COLS,d])
