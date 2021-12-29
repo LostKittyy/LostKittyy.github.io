@@ -52,7 +52,7 @@ function setup() {
 }
 
 function epicycles(x, y, rotation, fourier) {
-  let s = 1.36;
+  let s = 1.16;
   for (let i = 0; i < fourier.length; i++) {
     if (i==0) continue;
     let prevx = x;
@@ -63,7 +63,7 @@ function epicycles(x, y, rotation, fourier) {
     x += radius * cos(freq * time + phase + rotation);
     y += radius * sin(freq * time + phase + rotation);
     
-    strokeWeight(1.3)
+    strokeWeight(1)
     stroke(255,255,255,110);
     noFill();
     ellipse(prevx, prevy, radius * 2);
