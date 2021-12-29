@@ -64,25 +64,25 @@ function epicycles(x, y, rotation, fourier) {
     y += radius * sin(freq * time + phase + rotation);
     
     strokeWeight(2)
-    stroke(0,0,0,160);
+    stroke(0,0,0,180);
     noFill();
     ellipse(prevx, prevy, radius * 2);
-    stroke(0,0,0,160);
+    stroke(0,0,0,180);
     line(prevx, prevy, x, y);
   }
   return createVector(x, y);
 }
 
 function draw() {
-  background(255);
+  background(0);
   createAxis()
   drawGraph()
   let v = epicycles(width / 2, height / 2, 0, fourierX);
   path.unshift(v);
 
   beginShape();
-  strokeWeight(3)
-  stroke(0,0,0,255)
+  strokeWeight(2)
+  stroke(255,255,255,255)
   noFill();
   for (let i = 0; i < path.length; i++) {
     vertex(path[i].x, path[i].y);
