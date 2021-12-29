@@ -52,7 +52,7 @@ function setup() {
 }
 
 function epicycles(x, y, rotation, fourier) {
-  let s = .9;
+  let s = .5;
   for (let i = 0; i < fourier.length; i++) {
     if (i==0) continue;
     let prevx = x;
