@@ -64,10 +64,10 @@ function epicycles(x, y, rotation, fourier) {
     y += radius * sin(freq * time + phase + rotation);
     
     strokeWeight(2)
-    stroke(0,0,0,180);
+    stroke(255,255,255,180);
     noFill();
     ellipse(prevx, prevy, radius * 2);
-    stroke(0,0,0,180);
+    stroke(255,255,255,180);
     line(prevx, prevy, x, y);
   }
   return createVector(x, y);
