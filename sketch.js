@@ -10,7 +10,7 @@ let x = [];
 let fourierX;
 let time = 0;
 let path = [];
-const W = 1800, H=1600
+const W = innerWidth, H=innerHeight
 
 
 function createAxis(){
@@ -63,11 +63,11 @@ function epicycles(x, y, rotation, fourier) {
     x += radius * cos(freq * time + phase + rotation);
     y += radius * sin(freq * time + phase + rotation);
     
-    strokeWeight(1)
-    stroke(0,0,0,100);
+    strokeWeight(2)
+    stroke(0,0,0,160);
     noFill();
     ellipse(prevx, prevy, radius * 2);
-    stroke(0,0,0,100);
+    stroke(0,0,0,160);
     line(prevx, prevy, x, y);
   }
   return createVector(x, y);
@@ -81,7 +81,7 @@ function draw() {
   path.unshift(v);
 
   beginShape();
-  strokeWeight(4)
+  strokeWeight(3)
   stroke(0,0,0,255)
   noFill();
   for (let i = 0; i < path.length; i++) {
