@@ -16,6 +16,9 @@ onmessage = function(e){
     oz = -(row*(2-zgap))/2;
     let oo = -100
     oo = 0
+    
+    o = 0
+    oz = 0
         for (let j = 0; j < l; j++) {
             let x = d[j * 2]
             let z = d[j * 2 + 1]
