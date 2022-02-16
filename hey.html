@@ -53,7 +53,7 @@ document.body.appendChild(renderer.domElement)
 const scene = new THREE.Scene();
 const cam = new THREE.PerspectiveCamera(70, innerWidth/innerHeight, 0.001, 100000);
 cam.position.z = -100
-cam.position.x = 50
+cam.position.x = 200
 scene.background = new THREE.Color(0xefefef)
 
 const geometry = new THREE.BufferGeometry(); // create a simple square shape. We duplicate the top left and bottom right // vertices because each vertex needs to appear once per triangle. 
