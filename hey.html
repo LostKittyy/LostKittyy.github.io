@@ -304,7 +304,7 @@ function upacol () {
 }
 function main() {
     requestAnimationFrame(main)
-    renderer.setClearColor( 0x000000, 0);
+    scene.background = 0x000000;
     cube.geometry.attributes.position.needsUpdate = true
     upacol()
     renderer.render(scene, cam)
