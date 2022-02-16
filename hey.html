@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>hey</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+            }
+            .loader {
+                position: fixed;
+                background:black;
+                color:white;
+                width: 100vw;
+                height:100vh;
+                /*display: flex;
+                justify-content:center;*/
+            
+            }
+            .loading {
+                font-size: 4em;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="loader">
+          <div class="loading">loading...</div>
+        </div>
+    </body>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js">  </script>
+
+<!--<script src="https://cdn.jsdelivr.net/npm/three@0.122.0/examples/js/controls/OrbitControls.min.js"></script>-->
+<!--<script src="../libs/three/three.min.js"></script>-->
+<script src="../libs/three/OrbitControls.js"></script>
+    
+    
+<script type="module">
+/*import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.121.1/build/three.module.js'; 
+import { DRACOLoader } from 'https://cdn.jsdelivr.net/npm/three@0.121.1/examples/jsm/loaders/DRACOLoader.js'; */
+import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.121.1/examples/jsm/controls/OrbitControls.js';
+
+//alert("돈냈어안냈어!!")
+let COLS = 80;
+let ROWS = 80;
+const loader = document.querySelector(".loader")
+const loading = document.querySelector(".loading")
+let loadI = setInterval(()=>{
+    loading.innerHTML += "."
+},1000)
+const renderer = new THREE.WebGLRenderer();
+renderer.setSize(innerWidth, innerHeight);
+document.body.appendChild(renderer.domElement)
+const scene = new THREE.Scene();
+const cam = new THREE.PerspectiveCamera(70, innerWidth/innerHeight, 0.001, 100000);
+cam.position.z = -750
+cam.position.x = -120
+scene.background = new THREE.Color(0xefefef)
+
+const geometry = new THREE.BufferGeometry(); // create a simple square shape. We duplicate the top left and bottom right // vertices because each vertex needs to appear once per triangle. 
+ 
+
+
+let wv = new Worker("wv21.js")
+let wi = new Worker("wi2.js")
+let imgw = new Worker("testaimgw.js")
+
+
+
+
+
+function gradTexture(color) {
+        var c = document.createElement("canvas");
+        var ct = c.getContext("2d");
+        var size = 1024;
+        c.width = 16; c.height = size;
+        var gradient = ct.createLinearGradient(0,0,0,size);
+        var i = color[0].length;
+        while(i--){ gradient.addColorStop(color[0][i],color[1][i]); }
+        ct.fillStyle = gradient;
+        ct.fillRect(0,0,16,size);
+        var texture = new THREE.Texture(c);
+        texture.needsUpdate = true;
+        return texture;
+    }
+
+const gradientVert = `
+varying vec2 vUv;
+void main(){
+  vUv = uv;
+  float depth = -.9; //or maybe 1. you can experiment
+  gl_Position = vec4(position.xy, depth, 1.);
+}
+`
+
+const gradientFrag = `
+varying vec2 vUv;
+uniform vec3 uColorA;
+uniform vec3 uColorB;
+void main(){
+  gl_FragColor = vec4(
+    mix( uColorA, uColorB, vec3(vUv.y*1.85)),
+    1.
+  );
+}
+`
+
+var myGradient = new THREE.Mesh(
+  new THREE.PlaneBufferGeometry(5,5,5,5),
+  new THREE.ShaderMaterial({
+    uniforms: {
+      uColorA: { value: new THREE.Color(0xff8b3d) },
+      uColorB: { value: new THREE.Color(0xffffff)}
+    },
+    vertexShader: gradientVert,
+    fragmentShader: gradientFrag
+  })
+)
+myGradient.material.depthWrite = false
+myGradient.renderOrder = -99999
+scene.add(myGradient)
+let fp = "random (1).txt"
+
+
+let shadAW = new Worker("shadAW.js")
+
+let bshad = {
+    a: false
+}
+
+let dshad = {
+    a: {
+        d: [],
+        l: 0
+    }
+}
+
+let bw = {
+    v: false,
+    i: false
+}
+let dw = {
+    v: null,
+    i: []
+}
+function draw(){
+    if (bw.v && bw.i && bshad.a) {
+        clearInterval(loadI)
+        loader.style.display = "none"
+        alert("done!!check that out")
+        geometry.setIndex(dw.i)
+        geometry.setAttribute("position", new THREE.BufferAttribute(dw.v, 3))
+        geometry.setAttribute("acol", new THREE.BufferAttribute(new Float32Array(dshad.a.d),dshad.a.l))
+        
+        bw.v = false
+        bw.i = false
+        dw.v = null
+        dw.i = []
+        
+        bshad.a = false
+        dshad.a.d = []
+        dshad.a.l = 0
+    }
+}
+wv.onmessage = function (e) {
+    let v = e.data[0];
+    //alert("done v"+e.data[1])
+    bw.v = true
+    dw.v = v
+    draw()
+}
+
+wi.onmessage = function(e){
+    let i = e.data
+    bw.i = true
+    dw.i = i
+    draw()
+}
+
+function sendData(r,c,d){
+    alert("hey")
+    wv.postMessage([r,c,d])
+    wi.postMessage([r,c,d])
+    shadAW.postMessage([r,c,d])
+    alert("wait. still drawing scene..this takes times..")
+}
+
+imgw.onmessage = function (e) {
+    let p = e.data[0]
+    let d = e.data[1]
+    alert("done imgw : " + d.length)
+    saveTextAsFile(d)
+    wv.postMessage([ROWS,COLS,d])
+    wi.postMessage([ROWS,COLS,d])
+    shadAW.postMessage([ROWS,COLS,d])
+    alert("done send to wv wi")
+}
+let acolt = []
+shadAW.onmessage = function (e) {
+    let d = e.data[0]
+    bshad.a = true
+    dshad.a.d = d
+    dshad.a.l = e.data[1]
+    for (let i of d)acolt.push(false)
+    draw()
+}
+
+
+function readTextFile(file)
+{
+    var rawFile = new XMLHttpRequest();
+    rawFile.open("GET", file, false);
+    rawFile.onreadystatechange = function ()
+    {
+        if(rawFile.readyState === 4)
+        {
+            if(rawFile.status === 200 || rawFile.status == 0)
+            {
+                var allText = rawFile.responseText;
+                let arr =allText .split(",");
+                arr= arr.filter(function(str) {
+    return /\S/.test(str);
+    
+});
+sendData(ROWS,COLS,arr);
+
+            }
+        }
+    }
+    rawFile.send(null);
+}
+
+fp = "cute.txt";
+
+readTextFile(fp);
+
+
+const material = new THREE.MeshBasicMaterial( { color: 0xff0000 } );     
+
+
+const vs = `
+
+attribute float acol;
+varying float oacol;
+
+
+void main() {
+    vec3 npos = position;
+    npos.z -= (acol / 15.0);
+    gl_Position = projectionMatrix*modelViewMatrix*vec4(npos, 1);
+    oacol = acol;
+    
+}
+`;
+
+const fs = `
+varying float oacol;
+void main() { 
+    float rc = oacol/50.0;
+    gl_FragColor = vec4(rc, rc-0.3,rc*rc/1.8,1.0);
+}
+`
+
+const mat4=new THREE.Matrix4();
+mat4.set(1,0,0,0.1,
+0,1,0,0,
+0,0,1,0,
+0,0,0,1);
+
+const sh = new THREE.ShaderMaterial({
+    uniforms: {
+        "mat4": {
+            value: mat4
+        }
+    },
+    vertexShader: vs,
+    fragmentShader: fs
+})
+const cube = new THREE.Mesh( geometry, sh );             scene.add( cube );
+
+
+const controls = new OrbitControls(cam, renderer.domElement);
+        //controls.maxPolarAngle = Math.PI * 0.495;
+        //controls.target.set(0, 10, 0);
+        //controls.minDistance = 40.0;
+        //controls.maxDistance = 850.0;
+        controls.update();
+function upacol () {
+    cube.geometry.attributes.acol.needsUpdate = true
+    let arr = cube.geometry.attributes.acol.array
+    for (let i = 0;i<arr.length;i++){
+        if (arr[i] >=40.0){
+            arr[i] -= 2.0
+            acolt[i] = true
+        } else if (arr[i] <=0.1) {
+            arr[i] +=4.2
+            acolt[i] = false
+        } else {
+            if(acolt[i])arr[i] -=0.2 
+            else arr[i]+=.1
+        }
+    }
+}
+function main() {
+    requestAnimationFrame(main)
+    cube.geometry.attributes.position.needsUpdate = true
+    upacol()
+    renderer.render(scene, cam)
+    
+}
+
+main()
+
+
+
+</script>
+</html>
