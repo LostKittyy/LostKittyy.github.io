@@ -52,7 +52,7 @@ renderer.setSize(innerWidth, innerHeight);
 document.body.appendChild(renderer.domElement)
 const scene = new THREE.Scene();
 const cam = new THREE.PerspectiveCamera(70, innerWidth/innerHeight, 0.001, 100000);
-cam.position.z = 0
+cam.position.z = -100
 cam.position.x = 0
 scene.background = new THREE.Color(0xefefef)
 
