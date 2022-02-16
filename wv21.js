@@ -1,4 +1,4 @@
-onmessage = function(e){
+onmessage = function(e){ 
     let row = e.data[0]
     let col = e.data[1]
     let d = e.data[2]
@@ -12,13 +12,13 @@ onmessage = function(e){
     //o = col *2 +col-1
     //o = o/2
    // o = 10000
-    o = -(col*(2-xgap))/2;
+    o = -(col*(2+xgap))/2;
     oz = -(row*(2-zgap))/2;
     let oo = -100
     oo = 0
     
-    o = 0
-    oz = 0
+   // o = 0
+    //oz = 0
         for (let j = 0; j < l; j++) {
             let x = d[j * 2]
             let z = d[j * 2 + 1]
@@ -34,7 +34,7 @@ onmessage = function(e){
             ])*/
             
             verts = verts.concat([
-              -1 + xgap* x, -1 + zgap*z+oz ,  -1 +oo, //0
+              -1 + xgap* x +o, -1 + zgap*z+oz ,  -1 +oo, //0
                1 + xgap * x+o, -1 + zgap*z+oz, -1+oo, //1
               -1 + xgap * x+o,  1+zgap*z+oz,  -1+oo, //2
                1 + xgap * x+o,  1+zgap*z+oz,  -1+oo, //3
