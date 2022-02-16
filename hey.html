@@ -117,7 +117,7 @@ var myGradient = new THREE.Mesh(
 )
 myGradient.material.depthWrite = false
 myGradient.renderOrder = -99999
-scene.add(myGradient)
+//scene.add(myGradient)
 let fp = "random (1).txt"
 
 
@@ -257,6 +257,8 @@ varying float oacol;
 void main() { 
     float rc = oacol/50.0;
     gl_FragColor = vec4(rc, rc-0.3,rc*rc/1.8,1.0);
+    gl_FragColor = vec4(1.0, 1.0,1.0,1.0);
+    
 }
 `
 
@@ -302,6 +304,7 @@ function upacol () {
 }
 function main() {
     requestAnimationFrame(main)
+    renderer.setClearColor( 0x000000, 0);
     cube.geometry.attributes.position.needsUpdate = true
     upacol()
     renderer.render(scene, cam)
