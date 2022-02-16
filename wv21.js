@@ -13,7 +13,7 @@ onmessage = function(e){
     //o = o/2
    // o = 10000
     o = -(col*(2+xgap))/2;
-    oz = -(row*(2-zgap))/2;
+    oz = (row*(2-zgap))/2;
     let oo = -100
     oo = 0
     
